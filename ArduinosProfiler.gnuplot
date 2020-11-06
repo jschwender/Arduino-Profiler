@@ -4,6 +4,7 @@
 #
 Title1="Micro"    ## you may adjust the titles here
 Title2="Due"
+Title3="mini pro"
 #
 set datafile separator "\t"
 #
@@ -11,11 +12,10 @@ set xtics
 set grid xtics ytics mytics
 set style fill solid
 set xtics rotate by 90 right
-set terminal png
 set terminal png size 1000,800
 
 set output 'ArduinosProfile.png'
-set title "Runtime of commands AVR(Micro) vs. SAM3(Due)"
+set title "Runtime of commands on AVRs"
 set ylabel "runtime in µs"
 set logscale y
 set key left top
@@ -23,6 +23,7 @@ set yrange [0.1:300]
 #  text  mean  min   max   range   stddev   count
 #   1     2     3     4      5        6       7
 plot 'Arduino-1.result'  using 0:2:3:4:xticlabels(1) with yerr linecolor "red"  linewidth 2 title Title1, \
-     'Arduino-2.result'  using 0:2:3:4               with yerr linecolor "blue" linewidth 2 title Title2
+     'Arduino-2.result'  using 0:2:3:4               with yerr linecolor "blue" linewidth 2 title Title2, \
+     'Arduino-3.result'  using 0:2:3:4               with yerr linecolor rgb "#fff677ff" linewidth 2 title Title3
 
 

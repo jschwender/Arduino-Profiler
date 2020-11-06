@@ -11,18 +11,27 @@ prep_csv2() {
     sed -e "s/;/\t/g" -e "/^$/d" "$1"|datamash --sort groupby 4 mean 3 min 3 max 3 range 3 sstdev 3 count 3 |sort -t "	" -n -k 2 |grep -v "dummy" > "$2"
 }
 
+xsort() {
+    rm -f  "$2"
+    i=1
+    while read XXX
+    do
+        grep  "^$XXX"$'\t' "$1" >> "$2"
+    #    echo "$i"
+        i=$(( i+1 ))
+    done <cmdorder
+}
+
 prep_csv2 Arduino-1.csv Arduino-1.result 
 prep_csv2 Arduino-2.csv Arduino-2.res
+prep_csv2 Arduino-3.csv Arduino-3.res
 
-rm -f  Arduino-2.result
-awk -F"	" '{print $1}' Arduino-1.result > cmdorder
-i=1
-while read XXX
-do
-    grep -F "$XXX" Arduino-2.res >> Arduino-2.result
-    echo "$i"
-    i=$(( i+1 ))
-done <cmdorder
+awk -F"	" '{printf"%s\t\n", $1}' Arduino-1.result > cmdorder
+
+xsort Arduino-2.res Arduino-2.result
+xsort Arduino-3.res Arduino-3.result
+
 rm -f cmdorder
+
 gnuplot ArduinosProfiler.gnuplot
 

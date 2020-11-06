@@ -16,7 +16,9 @@ xsort() {
     i=1
     while read XXX
     do
-        grep  "^$XXX"$'\t' "$1" >> "$2"
+    YYY=$(echo $XXX|sed "s/*/\\\*/g")
+#    echo $YYY
+        grep  "^$YYY"$'\t' "$1" >> "$2"   || echo "$XXX"
     #    echo "$i"
         i=$(( i+1 ))
     done <cmdorder
@@ -31,7 +33,7 @@ awk -F"	" '{printf"%s\t\n", $1}' Arduino-1.result > cmdorder
 xsort Arduino-2.res Arduino-2.result
 xsort Arduino-3.res Arduino-3.result
 
-rm -f cmdorder
+#rm -f cmdorder
 
 gnuplot ArduinosProfiler.gnuplot
 
